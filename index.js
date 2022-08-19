@@ -2,25 +2,14 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { sequelize, User } = require('./models');
+const router = require('./routes/index');
 
 const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(cors({ origin: '*' }));
 app.use(express.json());
-
-app.post('/users', async (req, res) => {
-	const { email, password, nickname } = req.body;
-
-	try {
-		const user = await User.create({ email, password, nickname });
-
-		return res.json(user);
-	} catch (err) {
-		console.log(err);
-		return res.status(500).json(err);
-	}
-})
+app.use('/', router);
 
 sequelize.authenticate()
 	.then(() => {
