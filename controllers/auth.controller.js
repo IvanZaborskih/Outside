@@ -1,20 +1,16 @@
 const authService = require('../services/auth.service');
-const { validationResult } = require('express-validator');
 
 class AuthController {
 	async signIn(req, res) {
 		try {
-			const errorsValidation = validationResult(req);
-			if (!errorsValidation.isEmpty()) {
-				return res.status(400).json({ message: errorsValidation.errors[0].msg });
-			}
-
 			const userToken = await authService.signIn(req.body);
 
 			if (!userToken) {
 				throw new Error;
-			} if (userToken === 'exists') {
+			} else if (userToken === 'exists') {
 				return res.status(400).json({ message: 'User with email/nickname already exists' });
+			} else if (userToken === 'password') {
+				return res.status(400).json({ message: 'The password must contain at least 8 characters, at least one uppercase letter, one lowercase letter and one number' });
 			} else {
 				return res.status(200).json({ token: userToken, expire: process.env.EXPIRE_TIME });
 			}

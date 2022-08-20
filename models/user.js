@@ -12,8 +12,17 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+
+    toJSON() {
+      return { ...this.get(), id: undefined };
+    }
   }
   User.init({
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      type: DataTypes.INTEGER
+    },
     uuid: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -26,13 +35,13 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       validate: {
         notNull: { msg: 'User must have a email ' },
-        notEmpty: { msg: 'Email must not be empty ' }
+        notEmpty: { msg: 'Email must not be empty ' },
+        isEmail: { msg: 'Must be a valid email adress ' }
       }
     },
     password: {
       type: DataTypes.STRING(100),
       allowNull: false,
-      unique: true,
       validate: {
         notNull: { msg: 'User must have a password ' },
         notEmpty: { msg: 'Password must not be empty ' }
@@ -44,7 +53,11 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       validate: {
         notNull: { msg: 'User must have a nickname ' },
-        notEmpty: { msg: 'Nickname must not be empty ' }
+        notEmpty: { msg: 'Nickname must not be empty ' },
+        len: {
+          args: [5, 30],
+          msg: 'Nickname length to be between 5 and 30 characters'
+        }
       }
     }
   }, {

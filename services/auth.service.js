@@ -3,8 +3,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { Op } = require("sequelize");
 
-const generateAccessToken = (password, email) => {
-	const payload = { password, email };
+const generateAccessToken = (id, email) => {
+	const payload = { id, email };
 	return jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: process.env.EXPIRE_TIME });
 }
 
@@ -19,6 +19,12 @@ class AuthService {
 		if (candidate) {
 			return 'exists';
 		}
+
+		let regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+		if (!password.match(regexPassword)) {
+			return 'password'
+		}
+
 		const hashPassword = bcrypt.hashSync(password, 7);
 
 		const user = await User.create({ nickname, email, password: hashPassword });
@@ -26,7 +32,7 @@ class AuthService {
 		if (!user) {
 			return false;
 		} else {
-			const token = generateAccessToken(user.password, user.email);
+			const token = generateAccessToken(user.id, user.email);
 			return token;
 		}
 	}
@@ -43,7 +49,7 @@ class AuthService {
 			return 'password';
 		}
 
-		const token = generateAccessToken(user.password, user.email);
+		const token = generateAccessToken(user.id, user.email);
 		return token;
 	}
 }

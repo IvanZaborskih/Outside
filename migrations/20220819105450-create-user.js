@@ -2,6 +2,11 @@
 module.exports = {
   async up(queryInterface, DataTypes) {
     await queryInterface.createTable('users', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        type: DataTypes.INTEGER
+      },
       uuid: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -16,7 +21,6 @@ module.exports = {
       password: {
         type: DataTypes.STRING(100),
         allowNull: false,
-        unique: true
       },
       nickname: {
         type: DataTypes.STRING(30),
