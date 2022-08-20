@@ -4,11 +4,6 @@ const { validationResult } = require('express-validator');
 class AuthController {
 	async signIn(req, res) {
 		try {
-			const errorsValidation = validationResult(req);
-			if (!errorsValidation.isEmpty()) {
-				return res.status(400).json({ message: errorsValidation.errors[0].msg });
-			}
-
 			const userToken = await authService.signIn(req.body);
 
 			if (!userToken) {
