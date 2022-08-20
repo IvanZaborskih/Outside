@@ -43,7 +43,7 @@ class AuthService {
 			return 'password';
 		}
 
-		const token = generateAccessToken(user.id, user.email);
+		const token = generateAccessToken(user.password, user.email);
 		return token;
 	}
 }

@@ -11,5 +11,6 @@ router.post('/signin', [
 	check('nickname')
 		.isLength({ min: 4 }).withMessage('Nickname must be longer than 4 characters')
 ], authController.signIn);
+router.post('/login', authController.login);
 
 module.exports = router;

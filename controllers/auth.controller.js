@@ -23,23 +23,23 @@ class AuthController {
 		}
 	}
 
-	// async login(req, res) {
-	// 	try {
-	// 		const token = await authService.login(req.body);
+	async login(req, res) {
+		try {
+			const userToken = await authService.login(req.body);
 
-	// 		if (!token) {
-	// 			throw new Error;
-	// 		} else if (token === 'user') {
-	// 			return res.status(400).json({ message: 'User not found' });
-	// 		} else if (token === 'password') {
-	// 			return res.status(400).json({ message: 'Wrong password' });
-	// 		} else {
-	// 			return res.status(200).json(token);
-	// 		}
-	// 	} catch (err) {
-	// 		return res.status(500).json({ message: err.message });
-	// 	}
-	// }
+			if (!userToken) {
+				throw new Error;
+			} else if (userToken === 'user') {
+				return res.status(400).json({ message: 'User not found' });
+			} else if (userToken === 'password') {
+				return res.status(400).json({ message: 'Wrong password' });
+			} else {
+				return res.status(200).json({ token: userToken, expire: process.env.EXPIRE_TIME });
+			}
+		} catch (err) {
+			return res.status(500).json({ message: err.message });
+		}
+	}
 }
 
 module.exports = new AuthController();
