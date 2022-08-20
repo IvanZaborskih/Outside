@@ -19,6 +19,12 @@ class AuthService {
 		if (candidate) {
 			return 'exists';
 		}
+
+		let regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+		if (!password.match(regexPassword)) {
+			return 'password'
+		}
+
 		const hashPassword = bcrypt.hashSync(password, 7);
 
 		const user = await User.create({ nickname, email, password: hashPassword });

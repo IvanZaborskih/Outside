@@ -18,6 +18,12 @@ class UserService {
 
 	async updateUser(userBody, userId) {
 		const { nickname, email, password } = userBody;
+
+		let regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+		if (!password.match(regexPassword)) {
+			return 'password'
+		}
+
 		const hashPassword = bcrypt.hashSync(password, 7);
 
 		let user = await User.findOne({

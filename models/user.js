@@ -68,9 +68,3 @@ module.exports = (sequelize, DataTypes) => {
   });
   return User;
 };
-
-
-        // is: {
-        //   args: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]$/i,
-        //   msg: 'The password must contain at least eight characters, at least one uppercase letter, one lowercase letter and one number'
-        // }

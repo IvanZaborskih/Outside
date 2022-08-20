@@ -1,5 +1,4 @@
 const userService = require('../services/user.service');
-const { validationResult } = require('express-validator');
 
 class UserController {
 	async getUser(req, res) {
@@ -18,11 +17,6 @@ class UserController {
 
 	async updateUser(req, res) {
 		try {
-			const errorsValidation = validationResult(req);
-			if (!errorsValidation.isEmpty()) {
-				return res.status(400).json({ message: errorsValidation.errors[0].msg });
-			}
-
 			const user = await userService.updateUser(req.body, req.user.id);
 
 			if (!user) {
@@ -31,6 +25,8 @@ class UserController {
 				return res.status(400).json({ message: 'User has the same nickname' });
 			} else if (user === 'email') {
 				return res.status(400).json({ message: 'User has the same email' });
+			} else if (user === 'password') {
+				return res.status(400).json({ message: 'The password must contain at least 8 characters, at least one uppercase letter, one lowercase letter and one number' });
 			} else {
 				return res.status(200).json(user);
 			}
