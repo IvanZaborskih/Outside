@@ -2,6 +2,7 @@ const Router = require('express');
 const router = new Router();
 const authController = require('../controllers/auth.controller');
 const { check } = require('express-validator');
+const authMiddleware = require('../middleware/auth.middleware');
 
 router.post('/signin', [
 	check('password')
@@ -12,5 +13,6 @@ router.post('/signin', [
 		.isLength({ min: 4 }).withMessage('Nickname must be longer than 4 characters')
 ], authController.signIn);
 router.post('/login', authController.login);
+router.post('/logout', authMiddleware, authController.logout);
 
 module.exports = router;
