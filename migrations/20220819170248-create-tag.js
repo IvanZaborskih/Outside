@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: DataTypes.INTEGER
       },
-      creator: {
+      creator_uuid: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,

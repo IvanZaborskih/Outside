@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({ User, UserTag }) {
       // define association here
-      this.belongsTo(User, { foreignKey: 'creator', as: 'users' });
+      this.belongsTo(User, { foreignKey: 'creator_uuid', as: 'creator' });
       this.belongsToMany(User, { through: UserTag });
     }
   }
@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    creator: {
+    creator_uuid: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,

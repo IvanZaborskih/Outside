@@ -4,8 +4,8 @@ const tagController = require('../controllers/tag.controller');
 const authMiddleware = require('../middleware/auth.middleware');
 
 router.post('/', authMiddleware, tagController.postTag);
-// router.get('/user', authMiddleware, userController.getUser);
-// router.put('/user', authMiddleware, userController.updateUser);
+router.get('/:id', authMiddleware, tagController.getTag);
+router.put('/:id', authMiddleware, tagController.updateTag);
 // router.delete('/tag/id', authMiddleware, userController.deleteUser);
 
 module.exports = router;

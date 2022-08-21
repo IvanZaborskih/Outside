@@ -16,6 +16,36 @@ class TagController {
 			return res.status(500).json({ message: err.message });
 		}
 	}
+
+	async getTag(req, res) {
+		try {
+			const tag = await tagService.getTag(req.params.id, req.user.id);
+
+			if (!tag) {
+				throw new Error;
+			} else {
+				return res.status(200).json(tag);
+			}
+		} catch (err) {
+			return res.status(500).json({ message: err.message });
+		}
+	}
+
+	async updateTag(req, res) {
+		try {
+			const tag = await tagService.updateTag(req.body, req.params.id, req.user.id);
+
+			if (!tag) {
+				throw new Error;
+			} else if (tag === 'name') {
+				return res.status(400).json({ message: 'Tag has the same name' });
+			} else {
+				return res.status(200).json(tag);
+			}
+		} catch (err) {
+			return res.status(500).json({ message: err.message });
+		}
+	}
 }
 
 module.exports = new TagController();

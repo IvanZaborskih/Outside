@@ -15,7 +15,7 @@ class TagServise {
 			where: { id: userId }
 		});
 		const tag = await Tag.create(
-			{ name, sortOrder, creator: user.uuid }
+			{ name, sortOrder, creator_uuid: user.uuid }
 		);
 
 		if (!tag) {
@@ -24,9 +24,64 @@ class TagServise {
 			return await Tag.findOne({
 				where: { id: tag.id },
 				attributes: {
-					exclude: ['creator']
+					exclude: ['creator_uuid']
 				}
 			});
+		}
+	}
+
+	async getTag(tagId, userId) {
+		const tag = await Tag.findOne({
+			where: { id: tagId },
+			attributes: {
+				exclude: ['creator_uuid', 'id']
+			},
+			include: [{
+				model: User,
+				as: 'creator',
+				attributes: ['nickname', 'uuid']
+			}]
+		});
+
+		if (!tag) {
+			return false;
+		} else {
+			return tag;
+		}
+	}
+
+	async updateTag(tagBody, tagId, userId) {
+		const { name, sortOrder } = tagBody;
+
+		let tag = await Tag.findOne({
+			where: { id: tagId }
+		});
+
+		if (tag.name === name) {
+			return 'name'
+		}
+
+		tag = await Tag.update(
+			{ name, sortOrder },
+			{ where: { id: tagId } }
+		);
+
+		tag = await Tag.findOne({
+			where: { id: tagId },
+			attributes: {
+				exclude: ['creator_uuid', 'id']
+			},
+			include: [{
+				model: User,
+				as: 'creator',
+				attributes: ['nickname', 'uuid']
+			}]
+		});
+
+		if (!tag) {
+			return false;
+		} else {
+			return tag;
 		}
 	}
 }

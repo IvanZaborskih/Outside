@@ -23,7 +23,7 @@ class UserService {
 				model: Tag,
 				as: 'tags',
 				attributes: {
-					exclude: ['creator']
+					exclude: ['creator_uuid']
 				}
 			}]
 		});
