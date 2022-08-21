@@ -28,7 +28,6 @@ class UserService {
 
 	async updateUser(userBody, userId) {
 		const { nickname, email, password } = userBody;
-		// let hashPassword;
 
 		const hashPassword = checkPassword(password);
 
@@ -58,6 +57,16 @@ class UserService {
 			return false;
 		} else {
 			return newUser;
+		}
+	}
+
+	async deleteUser(id) {
+		const user = await User.destroy({ where: { id } });
+
+		if (!user) {
+			return false;
+		} else {
+			return true;
 		}
 	}
 }
