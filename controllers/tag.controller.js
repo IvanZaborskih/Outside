@@ -7,10 +7,10 @@ class TagController {
 
 			if (!tag) {
 				throw new Error;
-				// } else if (tag === 'name') {
-				// 	return res.status(400).json({ message: 'Tag with same name already exist' });
+			} else if (tag === 'name') {
+				return res.status(400).json({ message: 'Tag with same name already exist' });
 			} else {
-				return res.status(200).json({ tag });
+				return res.status(200).json(tag);
 			}
 		} catch (err) {
 			return res.status(500).json({ message: err.message });

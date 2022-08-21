@@ -30,12 +30,13 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING(40),
       allowNull: false,
+      unique: true,
       validate: {
         notNull: { msg: 'Tag must have a name ' },
         notEmpty: { msg: 'Tag must not be empty ' },
         len: {
           args: [4, 40],
-          msg: 'Nickname length to be between 4 and 40 characters'
+          msg: 'Name length to be between 4 and 40 characters'
         }
       }
     },

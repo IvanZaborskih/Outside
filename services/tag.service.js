@@ -4,18 +4,16 @@ class TagServise {
 	async postTag(tagBody, userId) {
 		const { name, sortOrder } = tagBody;
 
-		// let checkTagName = await Tag.findOne({
-		// 	where: { name }
-		// });
-
-		// if (checkTagName.name === name) {
-		// 	return 'name';
-		// }
+		const checkTagName = await Tag.findOne({
+			where: { name }
+		});
+		if (checkTagName !== null) {
+			return 'name';
+		}
 
 		const user = await User.findOne({
 			where: { id: userId }
 		});
-
 		const tag = await Tag.create(
 			{ name, sortOrder, creator: user.uuid }
 		);
@@ -23,7 +21,12 @@ class TagServise {
 		if (!tag) {
 			return false;
 		} else {
-			return tag;
+			return await Tag.findOne({
+				where: { id: tag.id },
+				attributes: {
+					exclude: ['creator']
+				}
+			});
 		}
 	}
 }
