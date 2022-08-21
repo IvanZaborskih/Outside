@@ -2,6 +2,16 @@ const { User } = require('../models/index');
 const { Op } = require("sequelize");
 const bcrypt = require('bcryptjs');
 
+const checkPassword = (password) => {
+	let regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+	if (typeof password !== 'undefined') {
+		if (!password.match(regexPassword)) {
+			return 'password'
+		}
+		return hashPassword = bcrypt.hashSync(password, 7);
+	}
+}
+
 class UserService {
 	async getUser(id) {
 		const user = await User.findOne({
@@ -18,13 +28,9 @@ class UserService {
 
 	async updateUser(userBody, userId) {
 		const { nickname, email, password } = userBody;
+		// let hashPassword;
 
-		let regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-		if (!password.match(regexPassword)) {
-			return 'password'
-		}
-
-		const hashPassword = bcrypt.hashSync(password, 7);
+		const hashPassword = checkPassword(password);
 
 		let user = await User.findOne({
 			where: { id: userId }
@@ -34,6 +40,8 @@ class UserService {
 			return 'nickname'
 		} else if (user.email === email) {
 			return 'email'
+		} else if (hashPassword === 'password') {
+			return 'password'
 		}
 
 		user = await User.update(
