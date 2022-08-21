@@ -1,4 +1,4 @@
-const { User } = require('../models/index');
+const { User, Tag } = require('../models/index');
 const { Op } = require("sequelize");
 const bcrypt = require('bcryptjs');
 
@@ -16,7 +16,16 @@ class UserService {
 	async getUser(id) {
 		const user = await User.findOne({
 			where: { id },
-			attributes: { exclude: ['uuid', 'password'] }
+			attributes: {
+				exclude: ['uuid', 'password']
+			},
+			include: [{
+				model: Tag,
+				as: 'tags',
+				attributes: {
+					exclude: ['creator']
+				}
+			}]
 		});
 
 		if (!user) {

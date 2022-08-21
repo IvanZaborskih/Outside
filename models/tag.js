@@ -9,8 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+    static associate({ User, UserTag }) {
       // define association here
+      this.belongsTo(User, { foreignKey: 'creator', as: 'users' });
+      this.belongsToMany(User, { through: UserTag });
     }
   }
   Tag.init({
@@ -22,11 +24,20 @@ module.exports = (sequelize, DataTypes) => {
     },
     creator: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
     },
     name: {
       type: DataTypes.STRING(40),
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notNull: { msg: 'Tag must have a name ' },
+        notEmpty: { msg: 'Tag must not be empty ' },
+        len: {
+          args: [4, 40],
+          msg: 'Nickname length to be between 4 and 40 characters'
+        }
+      }
     },
     sortOrder: {
       type: DataTypes.INTEGER,

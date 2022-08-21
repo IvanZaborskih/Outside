@@ -1,11 +1,10 @@
 const Router = require('express');
 const router = new Router();
 const userController = require('../controllers/user.controller');
-const { check } = require('express-validator');
 const authMiddleware = require('../middleware/auth.middleware');
 
-router.get('/user', authMiddleware, userController.getUser);
-router.put('/user', authMiddleware, userController.updateUser);
-router.delete('/user', authMiddleware, userController.deleteUser);
+router.get('/', authMiddleware, userController.getUser);
+router.put('/', authMiddleware, userController.updateUser);
+router.delete('/', authMiddleware, userController.deleteUser);
 
 module.exports = router;
