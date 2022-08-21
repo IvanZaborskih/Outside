@@ -6,6 +6,6 @@ const authMiddleware = require('../middleware/auth.middleware');
 router.post('/', authMiddleware, tagController.postTag);
 router.get('/:id', authMiddleware, tagController.getTag);
 router.put('/:id', authMiddleware, tagController.updateTag);
-// router.delete('/tag/id', authMiddleware, userController.deleteUser);
+router.delete('/:id', authMiddleware, tagController.deleteTag);
 
 module.exports = router;

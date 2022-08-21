@@ -52,12 +52,17 @@ class TagServise {
 
 	async updateTag(tagBody, tagId, userId) {
 		const { name, sortOrder } = tagBody;
+		const user = await User.findOne({
+			where: { id: userId }
+		});
 
 		let tag = await Tag.findOne({
 			where: { id: tagId }
 		});
 
-		if (tag.name === name) {
+		if (tag.creator_uuid !== user.uuid) {
+			return 'notCreator'
+		} else if (tag.name === name) {
 			return 'name'
 		}
 
@@ -77,6 +82,30 @@ class TagServise {
 				attributes: ['nickname', 'uuid']
 			}]
 		});
+
+		if (!tag) {
+			return false;
+		} else {
+			return tag;
+		}
+	}
+
+	async deleteTag(tagId, userId) {
+		const user = await User.findOne({
+			where: { id: userId }
+		});
+
+		let tag = await Tag.findOne({
+			where: { id: tagId }
+		});
+
+		if (tag.creator_uuid !== user.uuid) {
+			return 'notCreator'
+		}
+
+		tag = await Tag.destroy(
+			{ where: { id: tagId } }
+		);
 
 		if (!tag) {
 			return false;
