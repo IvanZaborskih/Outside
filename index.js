@@ -11,7 +11,7 @@ app.use(cors({ origin: '*' }));
 app.use(express.json());
 app.use('/', router);
 
-sequelize.authenticate()
+sequelize.sync()
 	.then(() => {
 		console.log('Database connected');
 		app.listen(PORT, () => {

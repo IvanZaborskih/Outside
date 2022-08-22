@@ -4,7 +4,13 @@
     "password": "0fca2d96bc24b8b814d36f6fb5e5ed041c3851618d94849d65fd641ce4ba5dfd",
     "database": "d1pf0ida11pel",
     "host": "ec2-54-77-40-202.eu-west-1.compute.amazonaws.com",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
   },
   "test": {
     "username": "urgfydjwibufds",
