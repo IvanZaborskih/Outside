@@ -48,6 +48,20 @@ class UserController {
 			return res.status(500).json({ message: err.message });
 		}
 	}
+
+	async addTagsToUser(req, res) {
+		try {
+			const userTags = await userService.addTagToUser(req.body, req.user.id);
+
+			if (!userTags) {
+				throw new Error;
+			} else {
+				return res.status(200).json(userTags);
+			}
+		} catch (err) {
+			return res.status(500).json({ message: err.message });
+		}
+	}
 }
 
 module.exports = new UserController();

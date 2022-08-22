@@ -8,12 +8,10 @@ module.exports = {
         primaryKey: true,
         type: DataTypes.INTEGER
       },
-      user_id: {
-        allowNull: false,
-        type: DataTypes.INTEGER
+      user_uuid: {
+        type: DataTypes.UUID
       },
       tag_id: {
-        allowNull: false,
         type: DataTypes.INTEGER
       }
     });

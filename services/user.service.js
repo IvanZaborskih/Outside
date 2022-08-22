@@ -1,6 +1,17 @@
-const { User, Tag } = require('../models/index');
-const { Op } = require("sequelize");
+const { User, Tag, UserTag } = require('../models/index');
 const bcrypt = require('bcryptjs');
+
+const addTags = async (userId, tagsIdArray) => {
+	await User.findOne({ where: { id: userId } })
+		.then(async user => {
+			for (let i = 0; i < tagsIdArray.length; i++) {
+				await Tag.findOne({ where: { id: tagsIdArray[i] } })
+					.then(async tag => {
+						await user.addTag(tag, { througth: UserTag });
+					});
+			}
+		});
+};
 
 const checkPassword = (password) => {
 	let regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
@@ -76,6 +87,19 @@ class UserService {
 			return false;
 		} else {
 			return true;
+		}
+	}
+
+	async addTagToUser(tagArray, userId) {
+		await addTags(userId, tagArray.tags);
+
+		const tags = await Tag.findAll({
+		})
+
+		if (!tags) {
+			return false;
+		} else {
+			return tags;
 		}
 	}
 }
