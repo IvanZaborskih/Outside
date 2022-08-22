@@ -28,7 +28,35 @@ class UserController {
 			} else if (user === 'password') {
 				return res.status(400).json({ message: 'The password must contain at least 8 characters, at least one uppercase letter, one lowercase letter and one number' });
 			} else {
-				return res.status(200).json(user);
+				return res.status(201).json(user);
+			}
+		} catch (err) {
+			return res.status(500).json({ message: err.message });
+		}
+	}
+
+	async deleteUser(req, res) {
+		try {
+			const user = await userService.deleteUser(req.user.id);
+
+			if (!user) {
+				throw new Error;
+			} else {
+				return res.status(200).json({ message: 'User deleted' });
+			}
+		} catch (err) {
+			return res.status(500).json({ message: err.message });
+		}
+	}
+
+	async addTagsToUser(req, res) {
+		try {
+			const userTags = await userService.addTagToUser(req.body, req.user.id);
+
+			if (!userTags) {
+				throw new Error;
+			} else {
+				return res.status(200).json(userTags);
 			}
 		} catch (err) {
 			return res.status(500).json({ message: err.message });

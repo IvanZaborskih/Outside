@@ -8,9 +8,10 @@ module.exports = {
         primaryKey: true,
         type: DataTypes.INTEGER
       },
-      creator: {
+      creator_uuid: {
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
       },
       name: {
         type: DataTypes.STRING(40),
