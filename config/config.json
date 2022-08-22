@@ -6,10 +6,7 @@
     "host": "ec2-54-77-40-202.eu-west-1.compute.amazonaws.com",
     "dialect": "postgres",
     "dialectOptions": {
-      "ssl": {
-        "require": true,
-        "rejectUnauthorized": false
-      }
+      "ssl": true
     }
   },
   "test": {
